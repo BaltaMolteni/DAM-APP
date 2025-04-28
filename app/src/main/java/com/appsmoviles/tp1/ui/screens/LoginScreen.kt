@@ -54,30 +54,29 @@ fun LoginScreen(navController: NavController) {
         Button(onClick = {
             if (username == "Juan Torres" && password == "1234utn") {
                 Toast.makeText(context, "Login exitoso.", Toast.LENGTH_SHORT).show()
-                // Navega a la pantalla HOME, pasando el nombre de usuario como argumento
-                // popUpTo borra el back stack hasta login para que no puedas volver al login después de ingresar
-                navController.navigate("${AppRoutes.HOME}/$username") {
-                    popUpTo(AppRoutes.LOGIN) { inclusive = true }
-                    launchSingleTop = true // Evita duplicados en el back stack
-                }
+                navController.navigate(AppRoutes.HOME)
             } else {
                 Toast.makeText(context, "Datos incorrectos.", Toast.LENGTH_SHORT).show()
             }
-        }) {
+        },
+            modifier = Modifier
+                .fillMaxWidth(0.75f)
+        ) {
             Text("Ingresar")
         }
         Spacer(modifier = Modifier.height(8.dp))
 
         TextButton(onClick = {
-            // Navega a la pantalla REGISTER
             navController.navigate(AppRoutes.REGISTER)
-        }) {
+        },
+            modifier= Modifier
+                .fillMaxWidth(0.75f))
+        {
             Text("Registrarse")
         }
     }
 }
 
-// Preview para LoginScreen
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {

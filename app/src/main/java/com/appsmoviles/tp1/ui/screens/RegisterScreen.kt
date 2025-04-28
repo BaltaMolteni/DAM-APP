@@ -68,7 +68,12 @@ fun RegisterScreen(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(24.dp))
 
-        Button(onClick = {
+        Button(
+            modifier = Modifier
+                .padding(bottom=13.dp)
+                .fillMaxWidth(0.80f),
+
+            onClick = {
             if (name.isEmpty()) {
                 Toast.makeText(context, "El nombre no puede estar vacío", Toast.LENGTH_SHORT).show()
                 return@Button
@@ -87,15 +92,19 @@ fun RegisterScreen(navController: NavController) {
             }
 
             Toast.makeText(context, "Registro exitoso. Por favor, inicia sesión.", Toast.LENGTH_SHORT).show()
-            // Navega de vuelta a la pantalla LOGIN
-            navController.popBackStack() // Elimina la pantalla actual (Register) del back stack
-            // O puedes navegar explícitamente:
-            // navController.navigate(AppRoutes.LOGIN) {
-            //    popUpTo(AppRoutes.LOGIN) { inclusive = true }
-            //    launchSingleTop = true
-            // }
-        }) {
+            navController.popBackStack()
+        }
+        ) {
             Text("Registrarse")
+        }
+
+        TextButton(onClick = {
+            navController.navigate(AppRoutes.LOGIN)
+        },
+            modifier= Modifier
+                .fillMaxWidth(0.75f))
+        {
+            Text("Volver")
         }
     }
 }

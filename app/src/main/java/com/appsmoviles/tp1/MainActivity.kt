@@ -23,52 +23,24 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Tp1Theme { // Usa tu tema
-                // Obtiene el NavController que manejará la navegación
+            Tp1Theme {
                 val navController = rememberNavController()
 
-                // NavHost es el contenedor de navegación.
-                // Necesita el navController y la ruta de inicio.
                 NavHost(navController = navController, startDestination = AppRoutes.LOGIN) {
 
-                    // Define el destino para la ruta LOGIN
                     composable(AppRoutes.LOGIN) {
-                        // Llama a la función Composable de la pantalla de Login, pasándole el navController
                         LoginScreen(navController = navController)
                     }
 
-                    // Define el destino para la ruta REGISTER
                     composable(AppRoutes.REGISTER) {
-                        // Llama a la función Composable de la pantalla de Registro, pasándole el navController
                         RegisterScreen(navController = navController)
                     }
-
-                    // Define el destino para la ruta HOME
-                    // Usamos navArguments para especificar que la ruta HOME espera un argumento 'username'
-                    composable(
-                        route = AppRoutes.HOME,
-                        arguments = listOf(navArgument("username") { type = NavType.StringType; nullable = true }) // Define el argumento
-                    ) { backStackEntry ->
-                        // Extrae el argumento 'username' del backStackEntry
-                        val username = backStackEntry.arguments?.getString("username")
-                        // Llama a la función Composable de la pantalla Home, pasándole el navController y el nombre de usuario
-                        HomeScreen(navController = navController, username = username)
+                    composable(AppRoutes.HOME) {
+                        HomeScreen(navController = navController)
                     }
 
-                    // Puedes agregar más destinos aquí para otras pantallas
                 }
             }
         }
-    }
-}
-
-// Preview principal (puede mostrar el inicio de la navegación o un indicador)
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    Tp1Theme {
-        // En la preview de la Activity principal, a menudo solo muestras un indicador
-        // o la pantalla de inicio si es simple.
-        Text("Previsualizando MainActivity con NavHost...")
     }
 }

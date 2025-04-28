@@ -2,6 +2,7 @@ package com.appsmoviles.tp1.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -15,10 +16,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.appsmoviles.tp1.R
+import com.appsmoviles.tp1.navigation.AppRoutes
 import com.appsmoviles.tp1.ui.theme.Tp1Theme
+import androidx.compose.ui.graphics.Color
 
 @Composable
-fun HomeScreen(navController: NavController, username: String?) { // Recibe NavController y el nombre de usuario (puede ser nulo)
+fun HomeScreen(navController: NavController) {
     var selectedPlatform by remember {
         mutableStateOf("")
     }
@@ -28,7 +31,7 @@ fun HomeScreen(navController: NavController, username: String?) { // Recibe NavC
     var otherPreferenceText by remember {
         mutableStateOf("")
     }
-    val context = LocalContext.current // Obtiene el contexto para el Toast
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -37,9 +40,10 @@ fun HomeScreen(navController: NavController, username: String?) { // Recibe NavC
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start
     ) {
-        // Usa el nombre de usuario recibido, con un fallback por si es nulo
+        Spacer(modifier = Modifier.height(70.dp))
+
         Text(
-            text = "Bienvenido, ${username ?: "Usuario"}",
+            text = "Bienvenido!",
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(bottom = 24.dp)
         )
@@ -76,7 +80,6 @@ fun HomeScreen(navController: NavController, username: String?) { // Recibe NavC
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Preferencias
         Text("Seleccioná tus preferencias:")
         val options = listOf("Programación", "Redes", "Seguridad", "Hardware", "Otra")
         options.forEach { option ->
@@ -87,10 +90,10 @@ fun HomeScreen(navController: NavController, username: String?) { // Recibe NavC
                 Checkbox(
                     checked = selectedPreferences.contains(option),
                     onCheckedChange = { isChecked ->
-                        if (isChecked) {
-                            selectedPreferences = selectedPreferences.toMutableSet().apply { add(option) }
+                        selectedPreferences = if (isChecked) {
+                            selectedPreferences.toMutableSet().apply { add(option) }
                         } else {
-                            selectedPreferences = selectedPreferences.toMutableSet().apply { remove(option) }
+                            selectedPreferences.toMutableSet().apply { remove(option) }
                         }
                     }
                 )
@@ -111,29 +114,37 @@ fun HomeScreen(navController: NavController, username: String?) { // Recibe NavC
             Toast.makeText(context, "Preferencias enviadas con éxito.", Toast.LENGTH_SHORT).show() },
             modifier = Modifier
                 .padding(top = 24.dp)
+                .fillMaxWidth(0.80f)
                 .align(Alignment.CenterHorizontally)
         ){
             Text("Enviar")
         }
-        // Si quisieras un botón para cerrar sesión y volver al login, lo agregarías aquí:
-        /*
+
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = {
+
+        Button( onClick = {
             navController.navigate(AppRoutes.LOGIN) {
-                popUpTo(AppRoutes.HOME) { inclusive = true } // Limpia el back stack hasta HOME
+                popUpTo(AppRoutes.HOME) { inclusive = true }
             }
-        }) {
+        },
+            colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Red
+        ),
+            modifier = Modifier
+                .padding(top = 24.dp)
+                .fillMaxWidth(0.40f)
+                .align(Alignment.CenterHorizontally)
+        ) {
             Text("Cerrar Sesión")
         }
-        */
+
     }
 }
 
-// Preview para HomeScreen (necesita un nombre de usuario de ejemplo)
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
     Tp1Theme {
-        HomeScreen(navController = rememberNavController(), username = "Usuario Preview")
+        HomeScreen(navController = rememberNavController())
     }
 }
