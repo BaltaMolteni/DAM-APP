@@ -8,11 +8,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.appsmoviles.tp1.navigation.AppRoutes
 import com.appsmoviles.tp1.ui.screens.HomeScreen
 import com.appsmoviles.tp1.ui.screens.LoginScreen
@@ -26,19 +24,26 @@ class MainActivity : ComponentActivity() {
             Tp1Theme {
                 val navController = rememberNavController()
 
-                NavHost(navController = navController, startDestination = AppRoutes.LOGIN) {
+                Scaffold(
+                    modifier = Modifier.fillMaxSize()
+                ) { innerPadding ->
 
-                    composable(AppRoutes.LOGIN) {
-                        LoginScreen(navController = navController)
-                    }
 
-                    composable(AppRoutes.REGISTER) {
-                        RegisterScreen(navController = navController)
+                    NavHost(
+                        navController = navController,
+                        startDestination = AppRoutes.LOGIN,
+                        modifier = Modifier.padding(innerPadding) // Se aplica el innerPadding al NavHost
+                    ) {
+                        composable(AppRoutes.LOGIN) {
+                            LoginScreen(navController = navController)
+                        }
+                        composable(AppRoutes.REGISTER) {
+                            RegisterScreen(navController = navController)
+                        }
+                        composable(AppRoutes.HOME) {
+                            HomeScreen(navController = navController)
+                        }
                     }
-                    composable(AppRoutes.HOME) {
-                        HomeScreen(navController = navController)
-                    }
-
                 }
             }
         }
